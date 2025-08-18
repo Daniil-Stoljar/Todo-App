@@ -56,9 +56,13 @@ const TodoApp = () => {
             />
             <span
               style={{
-                textDecoration: todo.completed ? "line-through" : "{todo.text}",
+                textDecoration: todo.completed ? "line-through" : "none",
+                color: todo.completed ? "#999" : "#000",
+                transition: "color 0.3s ease",
               }}
-            ></span>
+            >
+              {todo.text}
+            </span>
             <button onClick={() => removeTodo(todo.id)}>Remove</button>
           </li>
         ))}
