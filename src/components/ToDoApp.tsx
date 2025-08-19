@@ -1,72 +1,80 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ToDoItem from "./ToDoItem";
 
-interface ToDoItem {
+interface ToDo {
   id: string;
   text: string;
   completed: boolean;
 }
 
 const TodoApp = () => {
-  const [todos, setTodos] = useState<ToDoItem[]>([]);
+  const [todos, setTodos] = useState<ToDo[]>(() => {
+    const saved = localStorage.getItem("todos");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [newTodo, setNewTodo] = useState("");
 
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   const addTodo = () => {
-    if (newTodo !== "") {
-      const newID = crypto.randomUUID();
-      const newTodoItem: ToDoItem = {
-        id: newID,
-        text: newTodo,
-        completed: false,
-      };
-      setTodos([...todos, newTodoItem]);
-      setNewTodo("");
-    }
+    if (newTodo.trim() === "") return;
+    const newTodoItem: ToDo = {
+      id: crypto.randomUUID(),
+      text: newTodo.trim(),
+      completed: false,
+    };
+    setTodos([...todos, newTodoItem]);
+    setNewTodo("");
   };
 
   const removeTodo = (id: string) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(updatedTodos);
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
 
   const toggleCompleted = (id: string) => {
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, completed: !todo.completed };
-      }
-      return todo;
-    });
-    setTodos(updatedTodos);
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
+
+  const clearCompleted = () => {
+    setTodos(todos.filter((todo) => !todo.completed));
+  };
+
   return (
-    <div>
-      <h1>Todo App</h1>
-      <input
-        type="text"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
-      />
-      <button onClick={addTodo}>Add a ToDo</button>
-      <ul>
+    <div className="todo-app">
+      <h1>✅ Todo App</h1>
+      <div className="input-section">
+        <input
+          type="text"
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && addTodo()}
+          placeholder="What needs to be done?"
+        />
+        <button onClick={addTodo} disabled={!newTodo.trim()}>
+          Add
+        </button>
+      </div>
+      <ul className="todo-list">
         {todos.map((todo) => (
-          <li key={todo.id}>
-            <input
-              type="checkbox"
-              checked={todo.completed}
-              onChange={() => toggleCompleted(todo.id)}
-            />
-            <span
-              style={{
-                textDecoration: todo.completed ? "line-through" : "none",
-                color: todo.completed ? "#999" : "#000",
-                transition: "color 0.3s ease",
-              }}
-            >
-              {todo.text}
-            </span>
-            <button onClick={() => removeTodo(todo.id)}>Remove</button>
-          </li>
+          <ToDoItem
+            key={todo.id}
+            {...todo}
+            onToggle={toggleCompleted}
+            onRemove={removeTodo}
+          />
         ))}
       </ul>
+      {todos.some((t) => t.completed) && (
+        <button className="clear-btn" onClick={clearCompleted}>
+          Clear Completed
+        </button>
+      )}
     </div>
   );
 };
