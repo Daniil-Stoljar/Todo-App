@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+/*import { useEffect, useState } from "react";
 import ToDoItem from "./ToDoItem";
 
 interface ToDo {
@@ -80,3 +80,4 @@ const TodoApp = () => {
 };
 
 export default TodoApp;
+*/

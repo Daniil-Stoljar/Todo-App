@@ -1,33 +1,27 @@
-import React from "react";
+import type { Task } from "./Types";
 
-interface ToDoItemProps {
-  id: string;
-  text: string;
-  completed: boolean;
-  onToggle: (id: string) => void;
-  onRemove: (id: string) => void;
+interface TodoItemProps {
+  task: Task;
+  toggleTask: () => void;
+  deleteTask: () => void;
 }
 
-const ToDoItem: React.FC<ToDoItemProps> = ({
-  id,
-  text,
-  completed,
-  onToggle,
-  onRemove,
-}) => {
+export default function TodoItem({
+  task,
+  toggleTask,
+  deleteTask,
+}: TodoItemProps) {
   return (
     <li className="todo-item">
-      <input
-        type="checkbox"
-        checked={completed}
-        onChange={() => onToggle(id)}
-      />
-      <span className={completed ? "completed" : ""}>{text}</span>
-      <button className="remove-btn" onClick={() => onRemove(id)}>
+      <div className="flex items-center gap-2 flex-grow">
+        {/* ✅ Add this checkbox */}
+        <input type="checkbox" checked={task.completed} onChange={toggleTask} />
+        <span className={task.completed ? "completed" : ""}>{task.text}</span>
+      </div>
+
+      <button className="remove-btn" onClick={deleteTask}>
         ✖
       </button>
     </li>
   );
-};
-
-export default ToDoItem;
+}
