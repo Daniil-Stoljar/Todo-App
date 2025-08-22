@@ -14,7 +14,6 @@ export default function TodoItem({
   return (
     <li className="todo-item">
       <div className="flex items-center gap-2 flex-grow">
-        {/* ✅ Add this checkbox */}
         <input type="checkbox" checked={task.completed} onChange={toggleTask} />
         <span className={task.completed ? "completed" : ""}>{task.text}</span>
       </div>

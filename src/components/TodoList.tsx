@@ -3,7 +3,7 @@ import TodoItem from "./ToDoItem";
 
 interface TodoListProps {
   tasks: Task[];
-  toggleTask: (id: string) => void;
+  toggleTask: (id: string, completed: boolean) => void;
   deleteTask: (id: string) => void;
 }
 
@@ -22,7 +22,7 @@ export default function TodoList({
         <TodoItem
           key={task.id}
           task={task}
-          toggleTask={() => toggleTask(task.id)}
+          toggleTask={() => toggleTask(task.id, task.completed)}
           deleteTask={() => deleteTask(task.id)}
         />
       ))}

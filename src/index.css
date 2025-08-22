@@ -7,26 +7,29 @@
   --primary-hover: #4c51c9;
   --danger: #e63946;
   --danger-hover: #d62839;
-  --border-color: #e2e2e2;
+  --border-color: #444;
 
-  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   line-height: 1.6;
-  font-weight: 400;
-  color-scheme: light dark;
 }
 
 html,
 body {
   margin: 0;
-  padding: 0;
-  min-height: 100%;
-  background-color: var(--bg-dark);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-dark);
   color: var(--text-light);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--primary);
+}
 h2,
 h3,
 h4 {
